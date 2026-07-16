@@ -1,0 +1,9 @@
+.git
+.github
+.DS_Store
+__pycache__
+*.pyc
+agentbeats/.venv
+artifacts/live
+artifacts/agentbeats/live
+artifacts/agentbeats/docker-live

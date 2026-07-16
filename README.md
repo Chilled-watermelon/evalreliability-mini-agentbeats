@@ -1,4 +1,4 @@
-# EvalReliability-Mini v0.3 RC1
+# EvalReliability-Mini v0.3 RC1 + AgentBeats Adapter
 
 A deterministic research/portfolio release candidate for verifying recovery traces from a real **LangGraph 1.1.6** `StateGraph` workflow.
 
@@ -26,6 +26,29 @@ Live output is regenerated under ignored `artifacts/live/`. The tracked release 
 
 The repository uses Python's standard library plus the pinned `langgraph==1.1.6` dependency in `requirements.txt`. On the original verification machine, `run.py` may re-execute with an already-installed local Python runtime when the shell Python cannot import LangGraph. It does not install packages, alter `PYTHONPATH`, use a key, or access the network at runtime.
 
+## AgentBeats official-A2A evidence
+
+The adapter follows the official [AgentBeats Green Agent template](https://github.com/RDI-Foundation/green-agent-template) and [Purple Agent template](https://github.com/RDI-Foundation/agent-template): an A2A `AgentExecutor` receives the platform request, the Green evaluator calls the Purple subject through its advertised Agent Card, and both return structured `DataPart` artifacts. The checked-in Amber manifests declare one required `subject` A2A slot and no secret configuration.
+
+Install the adapter's exact lock and run the core RC plus two positive A2A assessments and one schema-corruption negative control:
+
+```bash
+uv sync --locked --project agentbeats
+uv run --locked --project agentbeats python run_agentbeats.py
+```
+
+The positive assessments must be byte-identical and retain the fixed RC metrics. The negative assessment changes one `graph_invoked.details` object to an array and must return `FAIL` with `278/279` schema-valid events rather than throw an exception.
+
+Build the CPU-only `linux/amd64` images and repeat the assessment in three independent fresh container/network states:
+
+```bash
+docker build --platform linux/amd64 -f agentbeats/Dockerfile.green -t evalreliability-agentbeats-green:local .
+docker build --platform linux/amd64 -f agentbeats/Dockerfile.purple -t evalreliability-agentbeats-purple:local .
+uv run --locked --project agentbeats python -m agentbeats_adapter.docker_assessment
+```
+
+The image base is pinned by digest, runtime dependencies are locked in `agentbeats/uv.lock`, the containers run as an unprivileged user, and no key or paid API is used. Setup and image build may download the declared public dependencies; assessment runtime only uses local A2A traffic and deterministic tools.
+
 ## Reference results
 
 | Gate | Result | Denominator and failure condition |
@@ -37,7 +60,7 @@ The repository uses Python's standard library plus the pinned `langgraph==1.1.6`
 | Recovery transition legality | 9/9 | Fails unless inject -> schedule -> resume -> retry -> success is legal for every faulted case |
 | Success-path negative control | 6/6 | Three no-fault cases x two modes; fails on any fault/resume event or terminal regression |
 | Replay idempotency | 2/2 modes | Fails if terminal or side-effect counts grow, a completed case re-executes, or a side effect is duplicated |
-| Automated tests | 16/16 | Fails on any `unittest` failure |
+| Automated tests | 20/20 | Fails on any `unittest` failure; includes four adapter/schema boundary tests |
 
 These values apply only to the fixed deterministic synthetic plan in this repository.
 
@@ -108,16 +131,15 @@ Each output directory contains:
 - `baseline_ledger.json`, `recovery_ledger.json`: attempts, invocations, resumes, terminal records, and idempotent side effects.
 - `case_manifest.json`, `feasibility.json`: fixed plan and real-framework runtime probe.
 - `report.md`, `test-results.txt`, `SHA256SUMS`: concise report, stable test snapshot, and hashes for every other artifact.
+- `artifacts/agentbeats/reference/positive-run-1.json`: tracked positive Green result from a fresh Docker assessment.
+- `artifacts/agentbeats/reference/negative-details-array.json`: tracked machine-readable negative result.
+- `artifacts/agentbeats/reference/assessment-summary.json`, `SHA256SUMS`: repeatability verdict, image IDs, and evidence hashes.
 
 ## CI and local equivalent
 
-The workflow in `.github/workflows/ci.yml` installs only the pinned minimal requirement and runs:
+The standard `ubuntu-latest` workflow runs the locked local A2A command, builds both `linux/amd64` images, performs all three fresh-state Docker assessments, uploads the machine JSON, and publishes commit-addressed GHCR images only after verification. It does not enumerate repository secrets, use a larger runner, call an LLM, or use a paid API.
 
-```bash
-python3 run.py
-```
-
-The CI-equivalent local command has been verified. No online CI run or badge is claimed in this RC.
+Before an actual public Actions URL exists, only CI-equivalent local verification is claimed. A workflow is called successful only when GitHub reports a completed successful run.
 
 ## Claim boundary
 
@@ -128,6 +150,7 @@ This is a **research/portfolio RC**, not production-grade infrastructure.
 - The JSON ledger is a local evidence mechanism, not a transactional database or distributed checkpoint store.
 - The RC does not demonstrate distributed reliability, production SLA, enterprise authentication, concurrency safety, multi-Agent orchestration, real-model behavior, real user traffic, or external adoption.
 - `12/12`, `9/9`, `279/279`, `6/6`, and `2/2` apply only to this fixed deterministic synthetic plan.
+- The Green/Purple split is a benchmark transport boundary, not evidence of a general multi-Agent system.
 
 ## License
 

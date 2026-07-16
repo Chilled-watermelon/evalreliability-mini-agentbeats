@@ -1,25 +1,73 @@
-name: deterministic-verification
+name: agentbeats-public-evidence
 
 on:
   push:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      GREEN_LOCAL: evalreliability-agentbeats-green:local
+      PURPLE_LOCAL: evalreliability-agentbeats-purple:local
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.11"
-          cache: pip
-      - name: Install pinned minimal dependency
-        run: python -m pip install --disable-pip-version-check -r requirements.txt
-      - name: Run CI-equivalent verification
-        run: python3 run.py
+          version: "0.11.6"
+      - name: Install locked adapter environment
+        run: uv sync --locked --project agentbeats
+      - name: Run core and official-A2A verification
+        run: uv run --locked --project agentbeats python run_agentbeats.py
+      - name: Build linux/amd64 Green image
+        run: docker build --platform linux/amd64 -f agentbeats/Dockerfile.green -t "$GREEN_LOCAL" .
+      - name: Build linux/amd64 Purple image
+        run: docker build --platform linux/amd64 -f agentbeats/Dockerfile.purple -t "$PURPLE_LOCAL" .
+      - name: Run three fresh-state Docker assessments
+        run: uv run --locked --project agentbeats python -m agentbeats_adapter.docker_assessment
+      - name: Upload machine-verifiable assessment results
+        uses: actions/upload-artifact@v4
+        with:
+          name: agentbeats-assessment-${{ github.sha }}
+          path: artifacts/agentbeats/docker-live/
+          if-no-files-found: error
+      - name: Normalize registry path
+        if: github.event_name != 'pull_request'
+        id: names
+        shell: bash
+        run: echo "repository=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish commit-addressed Green and Purple images
+        if: github.event_name != 'pull_request'
+        env:
+          REGISTRY_PATH: ghcr.io/${{ steps.names.outputs.repository }}
+        shell: bash
+        run: |
+          green_ref="$REGISTRY_PATH/green:${GITHUB_SHA}"
+          purple_ref="$REGISTRY_PATH/purple:${GITHUB_SHA}"
+          docker tag "$GREEN_LOCAL" "$green_ref"
+          docker tag "$PURPLE_LOCAL" "$purple_ref"
+          docker push "$green_ref"
+          docker push "$purple_ref"
+          green_digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "$green_ref")"
+          purple_digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "$purple_ref")"
+          printf '{\n  "green": "%s",\n  "purple": "%s"\n}\n' "$green_digest" "$purple_digest" > artifacts/agentbeats/docker-live/published-images.json
+      - name: Upload publication digest evidence
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: agentbeats-published-images-${{ github.sha }}
+          path: artifacts/agentbeats/docker-live/published-images.json
+          if-no-files-found: error

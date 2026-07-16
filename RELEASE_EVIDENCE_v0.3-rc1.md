@@ -7,7 +7,7 @@
 - Resolve the current release commit after checkout with: `git rev-parse HEAD`
 - Unique verification command: `python3 run.py`
 - CI-equivalent local command: `python3 run.py`
-- Local verification status: command returned zero and all 16 tests passed.
+- Local verification status: command returned zero and all 20 tests passed, including four AgentBeats adapter boundary tests.
 - Online CI status: not claimed; no workflow was published or run remotely for this local RC.
 
 The final commit hash is intentionally not embedded in this file because a commit cannot stably contain its own hash.
@@ -21,8 +21,8 @@ The final commit hash is intentionally not embedded in this file because a commi
 | Recovery raw ledger | `artifacts/reference/recovery_ledger.json` | `8b32d54e1665b89d9d76d2ce5d23f6cc3655ee10f9467bc3b87e8b8a64d39984` |
 | Summary | `artifacts/reference/summary.json` | `b599a70be5620d7c0bf649d971e5631486466c3606985d13e2030b00d85c2ca3` |
 | Validator report | `artifacts/reference/validator_report.json` | `edea216d739ef9f12c0aa1ef78c44f59a7476d0c280d6dcdb41189cf29f3c784` |
-| Tests snapshot | `artifacts/reference/test-results.txt` | `5af1a9dbca1f4886db1cee692c4c1bf3337233faeee8b528dfd95fdccd2381f7` |
-| Stable hash manifest | `artifacts/reference/SHA256SUMS` | `180ab7d0b66d2d5406e5a43a1c3eabe02bcc7dabf3cd0161169b69a837c6ed95` |
+| Tests snapshot | `artifacts/reference/test-results.txt` | `2481e094f073b9602ea47c596a40ca1c73aa8f200adbfae8522e6c341bf3fdd0` |
+| Stable hash manifest | `artifacts/reference/SHA256SUMS` | `61434315c73e02850caacc27ce1a54962da24e0c827a77511eb1d9dcc72021e6` |
 
 Wall-clock timestamps and measured latency are excluded from these deterministic release artifacts. No fixed latency is fabricated in their place.
 
@@ -36,7 +36,7 @@ Wall-clock timestamps and measured latency are excluded from these deterministic
 | Replay idempotency | 2/2 modes | Baseline and recovery preserve terminal and side-effect counts and skip all 12 completed cases on replay; any count growth or duplicate write fails the run |
 | Baseline behavior | 3/12 success, 0/9 recovered | Fixed fail-fast control |
 | Recovery behavior | 12/12 success, 9/9 recovered | Fixed checkpoint/resume comparison |
-| Automated tests | 16/16 | Schema, legal and illegal transitions, non-object details, no-fault controls, fault outcomes, side-effect reuse, replay idempotency, and artifact validation |
+| Automated tests | 20/20 | Core schema, transitions, non-object details, controls, idempotency, artifact validation, plus adapter result, tamper, negative-control, and claim-boundary checks |
 
 ## Direct evidence for the ByteIntern Agent framework role
 

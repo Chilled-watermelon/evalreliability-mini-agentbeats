@@ -2,3 +2,6 @@ __pycache__/
 *.py[cod]
 .DS_Store
 artifacts/live/
+artifacts/agentbeats/live/
+artifacts/agentbeats/docker-live/
+agentbeats/.venv/

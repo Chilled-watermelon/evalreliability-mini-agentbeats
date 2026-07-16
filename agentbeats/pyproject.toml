@@ -1,0 +1,12 @@
+[project]
+name = "evalreliability-agentbeats-adapter"
+version = "0.1.0"
+description = "Official-A2A adapter for deterministic EvalReliability RC evidence"
+requires-python = ">=3.13"
+dependencies = [
+    "a2a-sdk[http-server]==0.3.20",
+    "httpx==0.28.1",
+    "langgraph==1.1.6",
+    "pydantic==2.12.5",
+    "uvicorn==0.38.0",
+]

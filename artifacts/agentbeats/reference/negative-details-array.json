@@ -1,0 +1,92 @@
+{
+  "adapter_schema": "agentbeats.evalreliability.adapter.v1",
+  "artifacts": {
+    "sha256": {
+      "baseline_ledger.json": "9bd7d533ba351af2d814e4b9dedd65cc414718f7d423c02a0ac0bdbff2c142c9",
+      "case_manifest.json": "0002d7206bc3e16ebb63f73171c947ccadf728b694e20072f7518b5dd3e4373f",
+      "recovery_ledger.json": "8b32d54e1665b89d9d76d2ce5d23f6cc3655ee10f9467bc3b87e8b8a64d39984",
+      "summary.json": "b599a70be5620d7c0bf649d971e5631486466c3606985d13e2030b00d85c2ca3",
+      "traces.jsonl": "2e15cd7229a1e9f926b18a232f0273fd5a6dd8a9956380ac3ce1f30235f8e573"
+    }
+  },
+  "baseline_commit": "746794a2f20753dcf94e3ce3f7c7c11b60ae6eb9",
+  "benchmark": {
+    "framework": "LangGraph 1.1.6",
+    "name": "EvalReliability-Mini v0.3 RC1 AgentBeats adapter",
+    "protocol": "A2A via the AgentBeats official template contract"
+  },
+  "case_plan": {
+    "fault_counts": {
+      "interruption": 3,
+      "none": 3,
+      "timeout": 3,
+      "tool_error": 3
+    },
+    "total": 12
+  },
+  "claims": {
+    "deterministic_synthetic_cases": true,
+    "does_not_prove": [
+      "distributed_reliability",
+      "production_sla",
+      "enterprise_auth",
+      "real_llm_reliability",
+      "multi_agent_reliability",
+      "external_adoption"
+    ],
+    "local_deterministic_tools": true,
+    "no_llm": true,
+    "not_production_grade": true,
+    "process_local_checkpoint": true,
+    "research_portfolio_rc": true
+  },
+  "failures": [
+    "success path regression: baseline:case-001",
+    "trace line 2: details must be an object"
+  ],
+  "metrics": {
+    "baseline_fail_fast_transition": {
+      "total_case_count": 9,
+      "valid_case_count": 9,
+      "valid_rate": 1.0
+    },
+    "recovery_transition": {
+      "total_case_count": 9,
+      "valid_case_count": 9,
+      "valid_rate": 1.0
+    },
+    "replay_idempotency": {
+      "terminal_and_side_effect_counts_preserved": true,
+      "total_mode_count": 2,
+      "valid_mode_count": 2,
+      "valid_rate": 1.0
+    },
+    "success_path_negative_control": {
+      "total_path_count": 6,
+      "valid_path_count": 5,
+      "valid_rate": 0.833333,
+      "zero_regression": false
+    },
+    "trace_schema": {
+      "total_event_count": 279,
+      "valid_event_count": 278,
+      "valid_rate": 0.996416
+    }
+  },
+  "mode_results": {
+    "baseline": {
+      "faulted": 9,
+      "recovered": 0,
+      "success": 3,
+      "total": 12
+    },
+    "recovery": {
+      "faulted": 9,
+      "recovered": 9,
+      "success": 12,
+      "total": 12
+    }
+  },
+  "schema_version": "agentbeats.evalreliability.result.v1",
+  "status": "FAIL"
+}

@@ -1,3 +1,7 @@
+test_artifact_hash_tamper_returns_fail_without_exception (test_agentbeats_adapter.AgentBeatsAdapterTests.test_artifact_hash_tamper_returns_fail_without_exception) ... ok
+test_claim_boundary_is_machine_checked (test_agentbeats_adapter.AgentBeatsAdapterTests.test_claim_boundary_is_machine_checked) ... ok
+test_details_array_negative_control_returns_fail (test_agentbeats_adapter.AgentBeatsAdapterTests.test_details_array_negative_control_returns_fail) ... ok
+test_positive_result_preserves_rc1_metrics (test_agentbeats_adapter.AgentBeatsAdapterTests.test_positive_result_preserves_rc1_metrics) ... ok
 test_all_fault_recovery_transitions_are_legal (test_integration.RealFrameworkIntegrationTests.test_all_fault_recovery_transitions_are_legal) ... ok
 test_all_faults_fail_baseline_and_resume_in_recovery (test_integration.RealFrameworkIntegrationTests.test_all_faults_fail_baseline_and_resume_in_recovery) ... ok
 test_baseline_and_recovery_use_same_case_plan (test_integration.RealFrameworkIntegrationTests.test_baseline_and_recovery_use_same_case_plan) ... ok
@@ -16,6 +20,6 @@ test_validator_rejects_side_effect_idempotency_regression (test_integration.Real
 test_validator_returns_fail_for_non_object_graph_invoked_details (test_integration.RealFrameworkIntegrationTests.test_validator_returns_fail_for_non_object_graph_invoked_details) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests (wall-clock timing excluded from deterministic RC evidence)
+Ran 20 tests (wall-clock timing excluded from deterministic RC evidence)
 
 OK

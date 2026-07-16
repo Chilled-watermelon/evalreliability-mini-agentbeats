@@ -1,0 +1,16 @@
+{
+  "fresh_container_rounds": 3,
+  "local_image_ids": {
+    "green": "sha256:e3e958f90734953cea315c335087034d1ce13e0c536c2138e554d748bcd205df",
+    "purple": "sha256:7eb844f697c20825129dba749fc10df7773cd37f86dc960a53e4d30484f3fffd"
+  },
+  "negative_status": "FAIL",
+  "negative_trace_schema": {
+    "total_event_count": 279,
+    "valid_event_count": 278,
+    "valid_rate": 0.996416
+  },
+  "positive_result_sha256": "e1c65eddc36e9e81527315a5cb28be49ee9a6a5791eede0136b0260f11119e44",
+  "positive_runs_identical": true,
+  "status": "PASS"
+}
