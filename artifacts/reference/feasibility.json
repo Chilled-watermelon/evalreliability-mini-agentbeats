@@ -1,0 +1,47 @@
+{
+  "candidate_imports": {
+    "AutoGen": {
+      "modules": [
+        "autogen",
+        "autogen_agentchat"
+      ],
+      "status": "NOT_IMPORTABLE"
+    },
+    "LangGraph": {
+      "module": "langgraph",
+      "runtime_executed": true,
+      "status": "PASS"
+    },
+    "OpenAI Agents SDK": {
+      "module": "agents",
+      "status": "NOT_IMPORTABLE"
+    }
+  },
+  "constraints": {
+    "account_or_key": false,
+    "network": false,
+    "new_install": false,
+    "paid_api": false
+  },
+  "framework": {
+    "checkpoint_class": "InMemorySaver",
+    "distribution": "langgraph",
+    "name": "LangGraph",
+    "source": "https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph",
+    "state_graph_module": "langgraph.graph.state",
+    "version": "1.1.6"
+  },
+  "probe": {
+    "framework_module": "langgraph.graph.state",
+    "input": {
+      "value": 5
+    },
+    "node": "deterministic_tool",
+    "output": {
+      "value": 12
+    },
+    "runtime_type": "CompiledStateGraph",
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

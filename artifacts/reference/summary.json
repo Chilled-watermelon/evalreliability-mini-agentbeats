@@ -1,0 +1,90 @@
+{
+  "case_plan": {
+    "cases_sha256": "99d615da0befa6e97355cd4b318f0537a6e502f155bd2f05b1fc55734a735c81",
+    "interruption": 3,
+    "none": 3,
+    "timeout": 3,
+    "tool_error": 3,
+    "total": 12
+  },
+  "claim_boundary": "Research/portfolio MVP using LangGraph with deterministic synthetic cases and local deterministic tools; not production-grade, not a distributed production system, not a real-SLA or real-model claim, and not evidence that general Agent reliability is solved.",
+  "comparison": {
+    "same_case_plan": true,
+    "success_rate_delta": 0.75
+  },
+  "execution": {
+    "checkpoint_scope": "process-local LangGraph InMemorySaver",
+    "durable_scope": "atomic local JSON terminal and side-effect ledger",
+    "model": "none",
+    "network_or_external_service": false,
+    "tools": "local deterministic fetch/transform/commit"
+  },
+  "framework": {
+    "checkpoint_class": "InMemorySaver",
+    "distribution": "langgraph",
+    "name": "LangGraph",
+    "source": "https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph",
+    "state_graph_module": "langgraph.graph.state",
+    "version": "1.1.6"
+  },
+  "generated_at_utc": "2026-07-16T06:17:36.181024+00:00",
+  "modes": {
+    "baseline": {
+      "case_count": 12,
+      "faulted_case_count": 9,
+      "latency_ms": {
+        "mean": 1.494906,
+        "p50": 1.660959,
+        "p95": 2.044166,
+        "total": 17.938875
+      },
+      "recovered_case_count": 0,
+      "recovery_rate": 0.0,
+      "side_effect_record_count": 6,
+      "success_count": 3,
+      "success_rate": 0.25,
+      "suppressed_terminal_writes": 0,
+      "terminal_record_count": 12
+    },
+    "recovery": {
+      "case_count": 12,
+      "faulted_case_count": 9,
+      "latency_ms": {
+        "mean": 2.721503,
+        "p50": 3.022333,
+        "p95": 3.215333,
+        "total": 32.658041
+      },
+      "recovered_case_count": 9,
+      "recovery_rate": 1.0,
+      "side_effect_record_count": 12,
+      "success_count": 12,
+      "success_rate": 1.0,
+      "suppressed_terminal_writes": 0,
+      "terminal_record_count": 12
+    }
+  },
+  "replay_idempotency_check": {
+    "baseline": {
+      "replay_skipped_count": 12,
+      "replayed_case_count": 12,
+      "side_effect_records_after": 6,
+      "side_effect_records_before": 6,
+      "side_effects_deduplicated": true,
+      "terminal_deduplicated": true,
+      "terminal_records_after": 12,
+      "terminal_records_before": 12
+    },
+    "recovery": {
+      "replay_skipped_count": 12,
+      "replayed_case_count": 12,
+      "side_effect_records_after": 12,
+      "side_effect_records_before": 12,
+      "side_effects_deduplicated": true,
+      "terminal_deduplicated": true,
+      "terminal_records_after": 12,
+      "terminal_records_before": 12
+    }
+  },
+  "schema_version": "0.2"
+}

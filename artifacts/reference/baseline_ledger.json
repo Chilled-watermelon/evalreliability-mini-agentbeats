@@ -1,0 +1,222 @@
+{
+  "mode": "baseline",
+  "runs": {
+    "case-001": {
+      "attempts": {
+        "commit": 1,
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 2.010666,
+        "failure": null,
+        "final_result": "receipt:case-001:7",
+        "recovered": false,
+        "success": true
+      }
+    },
+    "case-002": {
+      "attempts": {
+        "commit": 1,
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 1.839291,
+        "failure": null,
+        "final_result": "receipt:case-002:13",
+        "recovered": false,
+        "success": true
+      }
+    },
+    "case-003": {
+      "attempts": {
+        "commit": 1,
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 1.660959,
+        "failure": null,
+        "final_result": "receipt:case-003:19",
+        "recovered": false,
+        "success": true
+      }
+    },
+    "case-004": {
+      "attempts": {
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 1.219833,
+        "failure": "timeout",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-005": {
+      "attempts": {
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 1.141209,
+        "failure": "timeout",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-006": {
+      "attempts": {
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 1.519667,
+        "failure": "timeout",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-007": {
+      "attempts": {
+        "fetch": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 0.850875,
+        "failure": "tool_error",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-008": {
+      "attempts": {
+        "fetch": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 0.870917,
+        "failure": "tool_error",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-009": {
+      "attempts": {
+        "fetch": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 0.83875,
+        "failure": "tool_error",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-010": {
+      "attempts": {
+        "commit": 1,
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 2.079042,
+        "failure": "interruption",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-011": {
+      "attempts": {
+        "commit": 1,
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 2.044166,
+        "failure": "interruption",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    },
+    "case-012": {
+      "attempts": {
+        "commit": 1,
+        "fetch": 1,
+        "transform": 1
+      },
+      "graph_invocation_count": 1,
+      "resume_count": 0,
+      "terminal": {
+        "elapsed_ms": 1.8635,
+        "failure": "interruption",
+        "final_result": null,
+        "recovered": false,
+        "success": false
+      }
+    }
+  },
+  "schema_version": "0.2",
+  "side_effects": {
+    "case-001:commit": {
+      "reuse_count": 0,
+      "value": "receipt:case-001:7",
+      "write_count": 1
+    },
+    "case-002:commit": {
+      "reuse_count": 0,
+      "value": "receipt:case-002:13",
+      "write_count": 1
+    },
+    "case-003:commit": {
+      "reuse_count": 0,
+      "value": "receipt:case-003:19",
+      "write_count": 1
+    },
+    "case-010:commit": {
+      "reuse_count": 0,
+      "value": "receipt:case-010:61",
+      "write_count": 1
+    },
+    "case-011:commit": {
+      "reuse_count": 0,
+      "value": "receipt:case-011:67",
+      "write_count": 1
+    },
+    "case-012:commit": {
+      "reuse_count": 0,
+      "value": "receipt:case-012:73",
+      "write_count": 1
+    }
+  },
+  "suppressed_terminal_writes": 0
+}

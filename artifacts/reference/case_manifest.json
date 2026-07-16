@@ -1,0 +1,121 @@
+{
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "case-001",
+      "expected_result": "receipt:case-001:7",
+      "fault": "none",
+      "fault_node": null,
+      "fault_phase": null,
+      "input_value": 2,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-002",
+      "expected_result": "receipt:case-002:13",
+      "fault": "none",
+      "fault_node": null,
+      "fault_phase": null,
+      "input_value": 4,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-003",
+      "expected_result": "receipt:case-003:19",
+      "fault": "none",
+      "fault_node": null,
+      "fault_phase": null,
+      "input_value": 6,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-004",
+      "expected_result": "receipt:case-004:25",
+      "fault": "timeout",
+      "fault_node": "transform",
+      "fault_phase": "before_tool",
+      "input_value": 8,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-005",
+      "expected_result": "receipt:case-005:31",
+      "fault": "timeout",
+      "fault_node": "transform",
+      "fault_phase": "before_tool",
+      "input_value": 10,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-006",
+      "expected_result": "receipt:case-006:37",
+      "fault": "timeout",
+      "fault_node": "transform",
+      "fault_phase": "before_tool",
+      "input_value": 12,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-007",
+      "expected_result": "receipt:case-007:43",
+      "fault": "tool_error",
+      "fault_node": "fetch",
+      "fault_phase": "before_tool",
+      "input_value": 14,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-008",
+      "expected_result": "receipt:case-008:49",
+      "fault": "tool_error",
+      "fault_node": "fetch",
+      "fault_phase": "before_tool",
+      "input_value": 16,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-009",
+      "expected_result": "receipt:case-009:55",
+      "fault": "tool_error",
+      "fault_node": "fetch",
+      "fault_phase": "before_tool",
+      "input_value": 18,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-010",
+      "expected_result": "receipt:case-010:61",
+      "fault": "interruption",
+      "fault_node": "commit",
+      "fault_phase": "after_side_effect",
+      "input_value": 20,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-011",
+      "expected_result": "receipt:case-011:67",
+      "fault": "interruption",
+      "fault_node": "commit",
+      "fault_phase": "after_side_effect",
+      "input_value": 22,
+      "trigger_attempt": 1
+    },
+    {
+      "case_id": "case-012",
+      "expected_result": "receipt:case-012:73",
+      "fault": "interruption",
+      "fault_node": "commit",
+      "fault_phase": "after_side_effect",
+      "input_value": 24,
+      "trigger_attempt": 1
+    }
+  ],
+  "cases_sha256": "99d615da0befa6e97355cd4b318f0537a6e502f155bd2f05b1fc55734a735c81",
+  "fault_counts": {
+    "interruption": 3,
+    "none": 3,
+    "timeout": 3,
+    "tool_error": 3
+  },
+  "schema_version": "0.2"
+}
