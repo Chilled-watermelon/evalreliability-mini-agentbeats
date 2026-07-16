@@ -7,7 +7,7 @@
   },
   "slots": {},
   "program": {
-    "image": "evalreliability-agentbeats-purple:local",
+    "image": "ghcr.io/chilled-watermelon/evalreliability-mini-agentbeats/purple@sha256:b33738e739d49cc3aa0c8a0fc594412310962a4e17a838f9b9437348542eee48",
     "entrypoint": "/app/agentbeats/.venv/bin/python -m agentbeats_adapter.server --role purple --host 0.0.0.0 --port 9009",
     "env": {},
     "network": {

@@ -15,7 +15,7 @@
     "subject": {"kind": "a2a"}
   },
   "program": {
-    "image": "evalreliability-agentbeats-green:local",
+    "image": "ghcr.io/chilled-watermelon/evalreliability-mini-agentbeats/green@sha256:9e9093ab86a28f392bbe4ee23b6aaf1f75a29877846b64a37853271b174d03e9",
     "entrypoint": "/app/agentbeats/.venv/bin/python -m agentbeats_adapter.server --role green --host 0.0.0.0 --port 9009",
     "env": {
       "AMBER_HINT_SUBJECT": "${slots.subject}"

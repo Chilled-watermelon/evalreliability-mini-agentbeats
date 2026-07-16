@@ -49,6 +49,17 @@ uv run --locked --project agentbeats python -m agentbeats_adapter.docker_assessm
 
 The image base is pinned by digest, runtime dependencies are locked in `agentbeats/uv.lock`, the containers run as an unprivileged user, and no key or paid API is used. Setup and image build may download the declared public dependencies; assessment runtime only uses local A2A traffic and deterministic tools.
 
+### Public verification evidence
+
+- [Public repository](https://github.com/Chilled-watermelon/evalreliability-mini-agentbeats)
+- [Verified adapter commit](https://github.com/Chilled-watermelon/evalreliability-mini-agentbeats/commit/f844a2df96ef89e810463fe76f50c192394a5a1d)
+- [Successful standard GitHub Actions run](https://github.com/Chilled-watermelon/evalreliability-mini-agentbeats/actions/runs/29512904514)
+- [Machine-readable positive result JSON](https://raw.githubusercontent.com/Chilled-watermelon/evalreliability-mini-agentbeats/f844a2df96ef89e810463fe76f50c192394a5a1d/artifacts/agentbeats/reference/positive-run-1.json)
+- Green image: `ghcr.io/chilled-watermelon/evalreliability-mini-agentbeats/green@sha256:9e9093ab86a28f392bbe4ee23b6aaf1f75a29877846b64a37853271b174d03e9`
+- Purple image: `ghcr.io/chilled-watermelon/evalreliability-mini-agentbeats/purple@sha256:b33738e739d49cc3aa0c8a0fc594412310962a4e17a838f9b9437348542eee48`
+
+The Actions run and anonymously pullable images prove public reproducibility of this fixed adapter assessment. They do not imply AgentBeats leaderboard completion, third-party adoption, or production readiness.
+
 ## Reference results
 
 | Gate | Result | Denominator and failure condition |
@@ -139,7 +150,7 @@ Each output directory contains:
 
 The standard `ubuntu-latest` workflow runs the locked local A2A command, builds both `linux/amd64` images, performs all three fresh-state Docker assessments, uploads the machine JSON, and publishes commit-addressed GHCR images only after verification. It does not enumerate repository secrets, use a larger runner, call an LLM, or use a paid API.
 
-Before an actual public Actions URL exists, only CI-equivalent local verification is claimed. A workflow is called successful only when GitHub reports a completed successful run.
+The linked public Actions run completed successfully on a standard GitHub-hosted runner. No result is called AgentBeats-completed or leaderboard-listed unless the platform itself exposes that record.
 
 ## Claim boundary
 

@@ -8,7 +8,7 @@
 - Unique verification command: `python3 run.py`
 - CI-equivalent local command: `python3 run.py`
 - Local verification status: command returned zero and all 20 tests passed, including four AgentBeats adapter boundary tests.
-- Online CI status: not claimed; no workflow was published or run remotely for this local RC.
+- Online CI status: a standard GitHub-hosted run completed successfully at `https://github.com/Chilled-watermelon/evalreliability-mini-agentbeats/actions/runs/29512904514`.
 
 The final commit hash is intentionally not embedded in this file because a commit cannot stably contain its own hash.
 
