@@ -1,0 +1,76 @@
+{
+  "case_results": {
+    "baseline_fail_fast_transition": {
+      "case-004": true,
+      "case-005": true,
+      "case-006": true,
+      "case-007": true,
+      "case-008": true,
+      "case-009": true,
+      "case-010": true,
+      "case-011": true,
+      "case-012": true
+    },
+    "recovery_transition": {
+      "case-004": true,
+      "case-005": true,
+      "case-006": true,
+      "case-007": true,
+      "case-008": true,
+      "case-009": true,
+      "case-010": true,
+      "case-011": true,
+      "case-012": true
+    },
+    "replay_idempotency": {
+      "baseline": true,
+      "recovery": true
+    },
+    "success_path_negative_control": {
+      "baseline:case-001": true,
+      "baseline:case-002": true,
+      "baseline:case-003": true,
+      "recovery:case-001": true,
+      "recovery:case-002": true,
+      "recovery:case-003": true
+    }
+  },
+  "definitions": {
+    "recovery_transition_legal_rate": "faulted recovery cases with inject -> schedule -> resume -> retry -> success in legal order / all faulted recovery cases",
+    "replay_idempotency": "modes preserving terminal and side-effect counts with one replay skip per completed case / baseline and recovery modes",
+    "success_path_zero_regression": "no-fault mode/case paths with no fault or resume events and one successful graph execution / all no-fault paths",
+    "trace_schema_valid_rate": "events satisfying required fields, types, manifest identity, contiguous sequence, and deterministic-field policy / all trace events"
+  },
+  "failures": [],
+  "metrics": {
+    "baseline_fail_fast_transition": {
+      "total_case_count": 9,
+      "valid_case_count": 9,
+      "valid_rate": 1.0
+    },
+    "recovery_transition": {
+      "total_case_count": 9,
+      "valid_case_count": 9,
+      "valid_rate": 1.0
+    },
+    "replay_idempotency": {
+      "terminal_and_side_effect_counts_preserved": true,
+      "total_mode_count": 2,
+      "valid_mode_count": 2,
+      "valid_rate": 1.0
+    },
+    "success_path_negative_control": {
+      "total_path_count": 6,
+      "valid_path_count": 6,
+      "valid_rate": 1.0,
+      "zero_regression": true
+    },
+    "trace_schema": {
+      "total_event_count": 279,
+      "valid_event_count": 279,
+      "valid_rate": 1.0
+    }
+  },
+  "schema_version": "0.3-rc1",
+  "status": "PASS"
+}

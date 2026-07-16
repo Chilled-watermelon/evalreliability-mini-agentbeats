@@ -1,3 +1,4 @@
-"""Deterministic LangGraph reliability integration for portfolio verification."""
+"""Deterministic LangGraph recovery-trace verification for portfolio review."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0rc1"
+SCHEMA_VERSION = "0.3-rc1"

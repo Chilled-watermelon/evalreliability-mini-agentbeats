@@ -272,7 +272,7 @@ class LangGraphEvalRunner:
             fault=case.fault,
             success=bool(terminal["success"]),
             recovered=bool(terminal["recovered"]),
-            elapsed_ms=float(terminal["elapsed_ms"]),
+            elapsed_ms=0.0,
             final_result=terminal.get("final_result"),
             failure=terminal.get("failure"),
             replay_skipped=True,
@@ -364,7 +364,7 @@ class LangGraphEvalRunner:
         terminal = {
             "success": success,
             "recovered": recovered,
-            "elapsed_ms": round(elapsed_ms, 6),
+            "elapsed_ms": None,
             "final_result": final_result,
             "failure": failure,
         }

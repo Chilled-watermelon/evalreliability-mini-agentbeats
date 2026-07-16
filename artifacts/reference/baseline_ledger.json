@@ -10,7 +10,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 2.010666,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-001:7",
         "recovered": false,
@@ -26,7 +26,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.839291,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-002:13",
         "recovered": false,
@@ -42,7 +42,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.660959,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-003:19",
         "recovered": false,
@@ -57,7 +57,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.219833,
+        "elapsed_ms": null,
         "failure": "timeout",
         "final_result": null,
         "recovered": false,
@@ -72,7 +72,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.141209,
+        "elapsed_ms": null,
         "failure": "timeout",
         "final_result": null,
         "recovered": false,
@@ -87,7 +87,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.519667,
+        "elapsed_ms": null,
         "failure": "timeout",
         "final_result": null,
         "recovered": false,
@@ -101,7 +101,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 0.850875,
+        "elapsed_ms": null,
         "failure": "tool_error",
         "final_result": null,
         "recovered": false,
@@ -115,7 +115,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 0.870917,
+        "elapsed_ms": null,
         "failure": "tool_error",
         "final_result": null,
         "recovered": false,
@@ -129,7 +129,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 0.83875,
+        "elapsed_ms": null,
         "failure": "tool_error",
         "final_result": null,
         "recovered": false,
@@ -145,7 +145,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 2.079042,
+        "elapsed_ms": null,
         "failure": "interruption",
         "final_result": null,
         "recovered": false,
@@ -161,7 +161,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 2.044166,
+        "elapsed_ms": null,
         "failure": "interruption",
         "final_result": null,
         "recovered": false,
@@ -177,7 +177,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.8635,
+        "elapsed_ms": null,
         "failure": "interruption",
         "final_result": null,
         "recovered": false,
@@ -185,7 +185,7 @@
       }
     }
   },
-  "schema_version": "0.2",
+  "schema_version": "0.3-rc1",
   "side_effects": {
     "case-001:commit": {
       "reuse_count": 0,

@@ -10,7 +10,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.675542,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-001:7",
         "recovered": false,
@@ -26,7 +26,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.98775,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-002:13",
         "recovered": false,
@@ -42,7 +42,7 @@
       "graph_invocation_count": 1,
       "resume_count": 0,
       "terminal": {
-        "elapsed_ms": 1.718667,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-003:19",
         "recovered": false,
@@ -58,7 +58,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 2.59725,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-004:25",
         "recovered": true,
@@ -74,7 +74,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 2.541625,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-005:31",
         "recovered": true,
@@ -90,7 +90,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 3.022333,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-006:37",
         "recovered": true,
@@ -106,7 +106,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 2.843833,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-007:43",
         "recovered": true,
@@ -122,7 +122,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 3.106791,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-008:49",
         "recovered": true,
@@ -138,7 +138,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 3.14725,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-009:55",
         "recovered": true,
@@ -154,7 +154,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 3.215333,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-010:61",
         "recovered": true,
@@ -170,7 +170,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 3.206125,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-011:67",
         "recovered": true,
@@ -186,7 +186,7 @@
       "graph_invocation_count": 2,
       "resume_count": 1,
       "terminal": {
-        "elapsed_ms": 3.595542,
+        "elapsed_ms": null,
         "failure": null,
         "final_result": "receipt:case-012:73",
         "recovered": true,
@@ -194,7 +194,7 @@
       }
     }
   },
-  "schema_version": "0.2",
+  "schema_version": "0.3-rc1",
   "side_effects": {
     "case-001:commit": {
       "reuse_count": 0,

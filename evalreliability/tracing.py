@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+
+from . import SCHEMA_VERSION
 
 
 class TraceWriter:
@@ -31,10 +32,11 @@ class TraceWriter:
         if missing:
             raise ValueError(f"trace event missing fields: {sorted(missing)}")
         self.sequence += 1
+        # Wall-clock timing is intentionally excluded from deterministic release evidence.
+        event["elapsed_ms"] = None
         payload = {
-            "schema_version": "0.2",
+            "schema_version": SCHEMA_VERSION,
             "sequence": self.sequence,
-            "timestamp_utc": datetime.now(UTC).isoformat(),
             **event,
         }
         with self.path.open("a", encoding="utf-8") as handle:

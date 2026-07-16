@@ -1,3 +1,4 @@
+test_all_fault_recovery_transitions_are_legal (test_integration.RealFrameworkIntegrationTests.test_all_fault_recovery_transitions_are_legal) ... ok
 test_all_faults_fail_baseline_and_resume_in_recovery (test_integration.RealFrameworkIntegrationTests.test_all_faults_fail_baseline_and_resume_in_recovery) ... ok
 test_baseline_and_recovery_use_same_case_plan (test_integration.RealFrameworkIntegrationTests.test_baseline_and_recovery_use_same_case_plan) ... ok
 test_failed_nodes_are_reinvoked_by_langgraph_resume (test_integration.RealFrameworkIntegrationTests.test_failed_nodes_are_reinvoked_by_langgraph_resume) ... ok
@@ -6,9 +7,15 @@ test_langgraph_runtime_probe_executes_compiled_graph (test_integration.RealFrame
 test_manifest_has_twelve_cases_and_fixed_fault_plan (test_integration.RealFrameworkIntegrationTests.test_manifest_has_twelve_cases_and_fixed_fault_plan) ... ok
 test_output_validator_accepts_complete_artifacts (test_integration.RealFrameworkIntegrationTests.test_output_validator_accepts_complete_artifacts) ... ok
 test_replay_does_not_duplicate_terminal_or_side_effect (test_integration.RealFrameworkIntegrationTests.test_replay_does_not_duplicate_terminal_or_side_effect) ... ok
+test_success_path_negative_controls_have_zero_regression (test_integration.RealFrameworkIntegrationTests.test_success_path_negative_controls_have_zero_regression) ... ok
 test_trace_contains_framework_resume_fault_and_tool_events (test_integration.RealFrameworkIntegrationTests.test_trace_contains_framework_resume_fault_and_tool_events) ... ok
+test_trace_schema_validator_accepts_every_event (test_integration.RealFrameworkIntegrationTests.test_trace_schema_validator_accepts_every_event) ... ok
+test_validator_rejects_illegal_recovery_transition (test_integration.RealFrameworkIntegrationTests.test_validator_rejects_illegal_recovery_transition) ... ok
+test_validator_rejects_missing_trace_schema_field (test_integration.RealFrameworkIntegrationTests.test_validator_rejects_missing_trace_schema_field) ... ok
+test_validator_rejects_side_effect_idempotency_regression (test_integration.RealFrameworkIntegrationTests.test_validator_rejects_side_effect_idempotency_regression) ... ok
+test_validator_returns_fail_for_non_object_graph_invoked_details (test_integration.RealFrameworkIntegrationTests.test_validator_returns_fail_for_non_object_graph_invoked_details) ... ok
 
 ----------------------------------------------------------------------
-Ran 9 tests in 0.072s
+Ran 16 tests (wall-clock timing excluded from deterministic RC evidence)
 
 OK

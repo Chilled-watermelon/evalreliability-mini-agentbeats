@@ -4,6 +4,8 @@ import hashlib
 import json
 from dataclasses import asdict, dataclass
 
+from . import SCHEMA_VERSION
+
 
 NO_FAULT = "none"
 TIMEOUT = "timeout"
@@ -54,7 +56,7 @@ def manifest_payload(cases: list[ReplayCase]) -> dict[str, object]:
     canonical = json.dumps(rows, sort_keys=True, separators=(",", ":")).encode("utf-8")
     counts = {fault: sum(case.fault == fault for case in cases) for fault in (NO_FAULT, TIMEOUT, TOOL_ERROR, INTERRUPTION)}
     return {
-        "schema_version": "0.2",
+        "schema_version": SCHEMA_VERSION,
         "case_count": len(cases),
         "fault_counts": counts,
         "cases_sha256": hashlib.sha256(canonical).hexdigest(),

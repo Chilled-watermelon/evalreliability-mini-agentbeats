@@ -7,7 +7,7 @@
     "tool_error": 3,
     "total": 12
   },
-  "claim_boundary": "Research/portfolio MVP using LangGraph with deterministic synthetic cases and local deterministic tools; not production-grade, not a distributed production system, not a real-SLA or real-model claim, and not evidence that general Agent reliability is solved.",
+  "claim_boundary": "Research/portfolio RC using real LangGraph with deterministic synthetic cases, local deterministic tools, no LLM, and a process-local checkpoint; not production-grade and not evidence of distributed reliability, a production SLA, enterprise authentication, multi-Agent orchestration, real external adoption, or general Agent reliability.",
   "comparison": {
     "same_case_plan": true,
     "success_rate_delta": 0.75
@@ -27,41 +27,36 @@
     "state_graph_module": "langgraph.graph.state",
     "version": "1.1.6"
   },
-  "generated_at_utc": "2026-07-16T06:17:36.181024+00:00",
   "modes": {
     "baseline": {
       "case_count": 12,
       "faulted_case_count": 9,
-      "latency_ms": {
-        "mean": 1.494906,
-        "p50": 1.660959,
-        "p95": 2.044166,
-        "total": 17.938875
-      },
       "recovered_case_count": 0,
       "recovery_rate": 0.0,
       "side_effect_record_count": 6,
       "success_count": 3,
       "success_rate": 0.25,
       "suppressed_terminal_writes": 0,
-      "terminal_record_count": 12
+      "terminal_record_count": 12,
+      "timing": {
+        "included_in_release_evidence": false,
+        "reason": "Wall-clock timing is machine-dependent and excluded from deterministic RC evidence."
+      }
     },
     "recovery": {
       "case_count": 12,
       "faulted_case_count": 9,
-      "latency_ms": {
-        "mean": 2.721503,
-        "p50": 3.022333,
-        "p95": 3.215333,
-        "total": 32.658041
-      },
       "recovered_case_count": 9,
       "recovery_rate": 1.0,
       "side_effect_record_count": 12,
       "success_count": 12,
       "success_rate": 1.0,
       "suppressed_terminal_writes": 0,
-      "terminal_record_count": 12
+      "terminal_record_count": 12,
+      "timing": {
+        "included_in_release_evidence": false,
+        "reason": "Wall-clock timing is machine-dependent and excluded from deterministic RC evidence."
+      }
     }
   },
   "replay_idempotency_check": {
@@ -86,5 +81,34 @@
       "terminal_records_before": 12
     }
   },
-  "schema_version": "0.2"
+  "schema_version": "0.3-rc1",
+  "verification": {
+    "baseline_fail_fast_transition": {
+      "total_case_count": 9,
+      "valid_case_count": 9,
+      "valid_rate": 1.0
+    },
+    "recovery_transition": {
+      "total_case_count": 9,
+      "valid_case_count": 9,
+      "valid_rate": 1.0
+    },
+    "replay_idempotency": {
+      "terminal_and_side_effect_counts_preserved": true,
+      "total_mode_count": 2,
+      "valid_mode_count": 2,
+      "valid_rate": 1.0
+    },
+    "success_path_negative_control": {
+      "total_path_count": 6,
+      "valid_path_count": 6,
+      "valid_rate": 1.0,
+      "zero_regression": true
+    },
+    "trace_schema": {
+      "total_event_count": 279,
+      "valid_event_count": 279,
+      "valid_rate": 1.0
+    }
+  }
 }

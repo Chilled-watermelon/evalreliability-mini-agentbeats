@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -12,6 +13,7 @@ from .framework import LangGraphEvalRunner, framework_info, runtime_probe
 from .reporting import build_summary, write_json, write_report, write_sha256s
 from .storage import JsonLedger
 from .tracing import TraceWriter
+from .validator import assert_validation_pass, build_validation_report
 
 
 KNOWN_OUTPUTS = {
@@ -24,6 +26,7 @@ KNOWN_OUTPUTS = {
     "summary.json",
     "test-results.txt",
     "traces.jsonl",
+    "validator_report.json",
 }
 
 
@@ -96,6 +99,11 @@ def run_experiment(output_dir: Path) -> dict[str, Any]:
     }
     summary = build_summary(cases, results, ledgers, replay_checks)
     write_json(output_dir / "summary.json", summary)
+    validation_report = build_validation_report(output_dir)
+    write_json(output_dir / "validator_report.json", validation_report)
+    assert_validation_pass(validation_report)
+    summary["verification"] = validation_report["metrics"]
+    write_json(output_dir / "summary.json", summary)
     write_report(output_dir / "report.md", summary)
     return summary
 
@@ -116,7 +124,15 @@ def validate_outputs(output_dir: Path) -> None:
         if not replay["terminal_deduplicated"] or not replay["side_effects_deduplicated"]:
             raise RuntimeError(f"{mode} replay idempotency check failed")
 
-    required_trace_fields = TraceWriter.REQUIRED_FIELDS | {"schema_version", "sequence", "timestamp_utc"}
+    stored_validator = json.loads((output_dir / "validator_report.json").read_text(encoding="utf-8"))
+    rebuilt_validator = build_validation_report(output_dir)
+    if stored_validator != rebuilt_validator:
+        raise RuntimeError("stored validator report differs from rebuilt validation")
+    assert_validation_pass(rebuilt_validator)
+    if summary.get("verification") != rebuilt_validator["metrics"]:
+        raise RuntimeError("summary verification metrics differ from validator report")
+
+    required_trace_fields = TraceWriter.REQUIRED_FIELDS | {"schema_version", "sequence"}
     lines = (output_dir / "traces.jsonl").read_text(encoding="utf-8").splitlines()
     if not lines:
         raise RuntimeError("trace file is empty")
@@ -125,6 +141,8 @@ def validate_outputs(output_dir: Path) -> None:
         missing_fields = required_trace_fields.difference(event)
         if missing_fields:
             raise RuntimeError(f"trace line {number} missing {sorted(missing_fields)}")
+        if event["elapsed_ms"] is not None or "timestamp_utc" in event:
+            raise RuntimeError(f"trace line {number} contains unstable timing data")
 
 
 def run_tests(repo_root: Path, output_dir: Path) -> int:
@@ -136,7 +154,12 @@ def run_tests(repo_root: Path, output_dir: Path) -> int:
         check=False,
     )
     combined = completed.stdout + completed.stderr
-    (output_dir / "test-results.txt").write_text(combined, encoding="utf-8")
+    stable_snapshot = re.sub(
+        r"Ran (\d+) tests? in [0-9.]+s",
+        r"Ran \1 tests (wall-clock timing excluded from deterministic RC evidence)",
+        combined,
+    )
+    (output_dir / "test-results.txt").write_text(stable_snapshot, encoding="utf-8")
     print(combined, end="")
     return completed.returncode
 
@@ -162,10 +185,15 @@ def main() -> int:
 
     baseline = summary["modes"]["baseline"]
     recovery = summary["modes"]["recovery"]
+    verification = summary["verification"]
     print(f"Framework: LangGraph {summary['framework']['version']}")
     print(f"Cases: {summary['case_plan']['total']} deterministic synthetic cases")
     print(f"Baseline: {baseline['success_count']}/{baseline['case_count']} success; recovered {baseline['recovered_case_count']}/{baseline['faulted_case_count']}")
     print(f"Recovery: {recovery['success_count']}/{recovery['case_count']} success; recovered {recovery['recovered_case_count']}/{recovery['faulted_case_count']}")
+    print(f"Trace schema: {verification['trace_schema']['valid_event_count']}/{verification['trace_schema']['total_event_count']} valid")
+    print(f"Recovery transitions: {verification['recovery_transition']['valid_case_count']}/{verification['recovery_transition']['total_case_count']} legal")
+    print(f"Success-path controls: {verification['success_path_negative_control']['valid_path_count']}/{verification['success_path_negative_control']['total_path_count']} zero-regression")
+    print(f"Replay idempotency: {verification['replay_idempotency']['valid_mode_count']}/{verification['replay_idempotency']['total_mode_count']} modes valid")
     print(f"Outputs: {output_dir}")
     print(f"Hashed files: {len(hashes)}")
     return test_returncode

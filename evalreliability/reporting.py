@@ -2,34 +2,25 @@ from __future__ import annotations
 
 import hashlib
 import json
-import statistics
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from . import SCHEMA_VERSION
 from .cases import NO_FAULT, ReplayCase, manifest_payload
 from .framework import CaseResult, framework_info
 from .storage import JsonLedger
 
 
 CLAIM_BOUNDARY = (
-    "Research/portfolio MVP using LangGraph with deterministic synthetic cases and local deterministic tools; "
-    "not production-grade, not a distributed production system, not a real-SLA or real-model claim, and not "
-    "evidence that general Agent reliability is solved."
+    "Research/portfolio RC using real LangGraph with deterministic synthetic cases, local deterministic tools, "
+    "no LLM, and a process-local checkpoint; not production-grade and not evidence of distributed reliability, "
+    "a production SLA, enterprise authentication, multi-Agent orchestration, real external adoption, or general "
+    "Agent reliability."
 )
-
-
-def _percentile(values: list[float], percentile: float) -> float:
-    ordered = sorted(values)
-    if not ordered:
-        return 0.0
-    index = min(len(ordered) - 1, max(0, int(round((len(ordered) - 1) * percentile))))
-    return ordered[index]
 
 
 def summarize_mode(results: list[CaseResult], ledger: JsonLedger) -> dict[str, Any]:
     faulted = [result for result in results if result.fault != NO_FAULT]
-    latencies = [result.elapsed_ms for result in results]
     successful = sum(result.success for result in results)
     recovered = sum(result.recovered for result in results)
     return {
@@ -42,11 +33,9 @@ def summarize_mode(results: list[CaseResult], ledger: JsonLedger) -> dict[str, A
         "terminal_record_count": ledger.terminal_count(),
         "side_effect_record_count": ledger.side_effect_count(),
         "suppressed_terminal_writes": ledger.suppressed_terminal_writes(),
-        "latency_ms": {
-            "mean": round(statistics.fmean(latencies), 6),
-            "p50": round(_percentile(latencies, 0.50), 6),
-            "p95": round(_percentile(latencies, 0.95), 6),
-            "total": round(sum(latencies), 6),
+        "timing": {
+            "included_in_release_evidence": False,
+            "reason": "Wall-clock timing is machine-dependent and excluded from deterministic RC evidence.",
         },
     }
 
@@ -60,8 +49,7 @@ def build_summary(
     manifest = manifest_payload(cases)
     mode_summaries = {mode: summarize_mode(results[mode], ledgers[mode]) for mode in ("baseline", "recovery")}
     return {
-        "schema_version": "0.2",
-        "generated_at_utc": datetime.now(UTC).isoformat(),
+        "schema_version": SCHEMA_VERSION,
         "framework": framework_info(),
         "execution": {
             "model": "none",
@@ -97,12 +85,17 @@ def write_report(path: Path, summary: dict[str, Any]) -> None:
     recovery = summary["modes"]["recovery"]
     baseline_replay = summary["replay_idempotency_check"]["baseline"]
     recovery_replay = summary["replay_idempotency_check"]["recovery"]
-    text = f"""# EvalReliability-Mini v0.2 Real-Framework Report
+    verification = summary["verification"]
+    text = f"""# EvalReliability-Mini v0.3 RC1 Verification Report
 
 - Framework: LangGraph {summary['framework']['version']} (`StateGraph` + `InMemorySaver`)
 - Cases: {summary['case_plan']['total']} deterministic synthetic replay cases; same case and fault plan in both modes
 - Baseline: {baseline['success_count']}/{baseline['case_count']} success; recovery {baseline['recovered_case_count']}/{baseline['faulted_case_count']}
 - Recovery: {recovery['success_count']}/{recovery['case_count']} success; recovery {recovery['recovered_case_count']}/{recovery['faulted_case_count']}
+- Trace schema: {verification['trace_schema']['valid_event_count']}/{verification['trace_schema']['total_event_count']} valid
+- Recovery transitions: {verification['recovery_transition']['valid_case_count']}/{verification['recovery_transition']['total_case_count']} legal
+- Success-path negative controls: {verification['success_path_negative_control']['valid_path_count']}/{verification['success_path_negative_control']['total_path_count']} zero-regression
+- Replay idempotency: {verification['replay_idempotency']['valid_mode_count']}/{verification['replay_idempotency']['total_mode_count']} modes preserve terminal and side-effect counts
 - Baseline replay: terminal {baseline_replay['terminal_records_before']} -> {baseline_replay['terminal_records_after']}; side effects {baseline_replay['side_effect_records_before']} -> {baseline_replay['side_effect_records_after']}
 - Recovery replay: terminal {recovery_replay['terminal_records_before']} -> {recovery_replay['terminal_records_after']}; side effects {recovery_replay['side_effect_records_before']} -> {recovery_replay['side_effect_records_after']}
 - Model/API: no LLM; local deterministic tools; no network, account, key, paid API, or external service

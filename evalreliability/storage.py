@@ -5,10 +5,12 @@ import os
 from pathlib import Path
 from typing import Any
 
+from . import SCHEMA_VERSION
+
 
 def _empty_state(mode: str) -> dict[str, Any]:
     return {
-        "schema_version": "0.2",
+        "schema_version": SCHEMA_VERSION,
         "mode": mode,
         "runs": {},
         "side_effects": {},

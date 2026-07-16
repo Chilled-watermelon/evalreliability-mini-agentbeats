@@ -8,6 +8,7 @@ from pathlib import Path
 from evalreliability.cases import INTERRUPTION, TIMEOUT, TOOL_ERROR, build_cases
 from evalreliability.cli import run_experiment, validate_outputs
 from evalreliability.framework import framework_info, runtime_probe
+from evalreliability.validator import build_validation_report
 
 
 class RealFrameworkIntegrationTests(unittest.TestCase):
@@ -18,6 +19,7 @@ class RealFrameworkIntegrationTests(unittest.TestCase):
         cls.summary = run_experiment(cls.output_dir)
         cls.baseline_ledger = json.loads((cls.output_dir / "baseline_ledger.json").read_text(encoding="utf-8"))
         cls.recovery_ledger = json.loads((cls.output_dir / "recovery_ledger.json").read_text(encoding="utf-8"))
+        cls.validator_report = json.loads((cls.output_dir / "validator_report.json").read_text(encoding="utf-8"))
 
     @classmethod
     def tearDownClass(cls):
@@ -80,6 +82,109 @@ class RealFrameworkIntegrationTests(unittest.TestCase):
         states = {event["state"] for event in events}
         self.assertTrue({"graph_invoked", "fault_injected", "graph_resume_scheduled", "side_effect_written", "side_effect_reused"}.issubset(states))
         self.assertTrue(all(event["framework"] == "LangGraph" for event in events))
+        self.assertTrue(all(event["elapsed_ms"] is None for event in events))
+        self.assertTrue(all("timestamp_utc" not in event for event in events))
+
+    def test_trace_schema_validator_accepts_every_event(self):
+        metrics = self.validator_report["metrics"]["trace_schema"]
+        self.assertEqual("PASS", self.validator_report["status"])
+        self.assertGreater(metrics["total_event_count"], 0)
+        self.assertEqual(metrics["total_event_count"], metrics["valid_event_count"])
+        self.assertEqual(1.0, metrics["valid_rate"])
+
+    def test_success_path_negative_controls_have_zero_regression(self):
+        metrics = self.validator_report["metrics"]["success_path_negative_control"]
+        self.assertEqual((6, 6), (metrics["valid_path_count"], metrics["total_path_count"]))
+        self.assertTrue(metrics["zero_regression"])
+
+    def test_all_fault_recovery_transitions_are_legal(self):
+        metrics = self.validator_report["metrics"]["recovery_transition"]
+        self.assertEqual((9, 9), (metrics["valid_case_count"], metrics["total_case_count"]))
+        self.assertEqual(1.0, metrics["valid_rate"])
+
+    def test_validator_rejects_missing_trace_schema_field(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "artifacts"
+            run_experiment(output)
+            path = output / "traces.jsonl"
+            events = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+            events[0].pop("details")
+            path.write_text("\n".join(json.dumps(event, sort_keys=True) for event in events) + "\n", encoding="utf-8")
+            report = build_validation_report(output)
+            self.assertEqual("FAIL", report["status"])
+            self.assertEqual(
+                report["metrics"]["trace_schema"]["total_event_count"] - 1,
+                report["metrics"]["trace_schema"]["valid_event_count"],
+            )
+            events[0]["details"] = {}
+            events[0]["state"] = []
+            path.write_text("\n".join(json.dumps(event, sort_keys=True) for event in events) + "\n", encoding="utf-8")
+            wrong_type_report = build_validation_report(output)
+            self.assertEqual("FAIL", wrong_type_report["status"])
+
+    def test_validator_rejects_illegal_recovery_transition(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "artifacts"
+            run_experiment(output)
+            path = output / "traces.jsonl"
+            events = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+            for event in events:
+                if (
+                    event["mode"] == "recovery"
+                    and event["case_id"] == "case-004"
+                    and event["state"] == "graph_resume_scheduled"
+                ):
+                    event["state"] = "node_completed"
+                    break
+            path.write_text("\n".join(json.dumps(event, sort_keys=True) for event in events) + "\n", encoding="utf-8")
+            report = build_validation_report(output)
+            self.assertEqual("FAIL", report["status"])
+            self.assertFalse(report["case_results"]["recovery_transition"]["case-004"])
+
+    def test_validator_returns_fail_for_non_object_graph_invoked_details(self):
+        targets = (
+            ("baseline", "case-001", False),
+            ("recovery", "case-004", True),
+        )
+        for mode, case_id, resume in targets:
+            with self.subTest(mode=mode, case_id=case_id, resume=resume):
+                with tempfile.TemporaryDirectory() as temporary:
+                    output = Path(temporary) / "artifacts"
+                    run_experiment(output)
+                    path = output / "traces.jsonl"
+                    events = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+                    target = next(
+                        event
+                        for event in events
+                        if event["mode"] == mode
+                        and event["case_id"] == case_id
+                        and event["state"] == "graph_invoked"
+                        and event["details"].get("resume") is resume
+                    )
+                    target["details"] = []
+                    path.write_text(
+                        "\n".join(json.dumps(event, sort_keys=True) for event in events) + "\n",
+                        encoding="utf-8",
+                    )
+
+                    report = build_validation_report(output)
+
+                    self.assertEqual("FAIL", report["status"])
+                    schema = report["metrics"]["trace_schema"]
+                    self.assertEqual(schema["total_event_count"] - 1, schema["valid_event_count"])
+                    self.assertTrue(any("details must be an object" in failure for failure in report["failures"]))
+
+    def test_validator_rejects_side_effect_idempotency_regression(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "artifacts"
+            run_experiment(output)
+            path = output / "recovery_ledger.json"
+            ledger = json.loads(path.read_text(encoding="utf-8"))
+            ledger["side_effects"]["case-010:commit"]["write_count"] = 2
+            path.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            report = build_validation_report(output)
+            self.assertEqual("FAIL", report["status"])
+            self.assertFalse(report["case_results"]["replay_idempotency"]["recovery"])
 
     def test_output_validator_accepts_complete_artifacts(self):
         (self.output_dir / "test-results.txt").write_text("fixture tests passed\n", encoding="utf-8")

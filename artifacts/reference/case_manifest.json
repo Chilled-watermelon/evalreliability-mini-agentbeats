@@ -117,5 +117,5 @@
     "timeout": 3,
     "tool_error": 3
   },
-  "schema_version": "0.2"
+  "schema_version": "0.3-rc1"
 }
